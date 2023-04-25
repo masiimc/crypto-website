@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top 50 Crypto Developed by Masome Mahmudi</title>
+    <link rel="stylesheet" href="assest/styles/price.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
+    <script src='https://unpkg.com/axios/dist/axios.min.js'></script>
+</head>
+
+<body>
+    <main>
+        <header>
+            <div class="head-top">
+                <div class="logo">
+                    <figure>
+                        <img src="assest/image/menu-logo.webp" alt="">
+                    </figure>
+                </div>
+                <span>PRICE</span>
+                <ul class="menu">
+                    <li class="dropDown"><button class="dropBtn">Coin <i class="bi bi-chevron-down"></i></button></li>
+                    <li class="dropDown"><button class="dropBtn">NTF <i class="bi bi-chevron-down"></i></button></li>
+                    <li class="dropDown"><button class="dropBtn">Defi <i class="bi bi-chevron-down"></i></button></li>
+                    <li class="dropDown"><button class="dropBtn">GameFi <i class="bi bi-chevron-down"></i></button></li>
+                    <li class="dropDown"><button class="dropBtn">Resources <i class="bi bi-chevron-down"></i></button>
+                    </li>
+                </ul>
+                <div class="search">
+                    <!-- icon search btn -->
+                    <input type="text" placeholder="search">
+                </div>
+                <div class="login">
+                    <button>Log In</button>
+                    <button>Sign Up</button>
+                    <button>USD</button>
+                </div>
+                <span>English</span>
+                <button class="mode"><i class="bi bi-brightness-high"></i></button>
+            </div>
+            <div class="head-bottom">
+                <a href="#">All Coin</a>
+                <div>
+                    <button>Category: AllCoins <i class="bi bi-chevron-down"></i></button>
+                </div>
+                <span>More Filters</span>
+            </div>
+        </header>
+
+        <section class="body">
+            <!-- badan dorost konm -->
+            <section class="mover">
+                <h1>Top Mover</h1>
+                <div class="gallery" id="move"></div>
+            </section>
+
+            <section class="tabel">
+                <div class="title">Today's Cryptocurrency Prices</div>
+                <div class="tabel-50">
+                    <div class="th">
+                        <span class="name">NAME</span>
+                        <span class="price">PRICE</span>
+                        <span class="change">24H CHANGE</span>
+                        <span class="volume">24H VOLUME</span>
+                        <span class="market">MARKET CAP</span>
+                    </div>
+                    <ul id="tabel"></ul>
+                </div>
+                <div class="pagination">
+                    <i class="bi bi-chevron-left"></i>
+                    <a href="#" class="active">1</a>
+                    <a href="price2.html" target="_self">2</a>
+                    <i class="bi bi-chevron-right"></i>
+                </div>
+            </section>
+        </section>
+        <section class="footer">
+            <span>My Info</span>
+            <a target="_blank" href="mailto:springmasome@gmail.com">EMAIL</a>
+            <a target="_blank" href="https://www.linkedin.com/in/masome-spring">LINKDIN</a>
+            <a target="_blank" href="https://github.com/masiimc">GITHUB</a>
+        </section>
+    </main>
+    <script>
+        const tabel = document.querySelector('#tabel');
+        function tabel50() {
+            tabel.innerHTML = '';
+
+            axios.get(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&locale=en`)
+                .then((responses) => {
+                    let data = responses.data;
+                    console.log(data)
+                    data.forEach((val, idx) => {
+                        if (idx < 50) {
+
+                            tabel.innerHTML += `
+                    <li>
+                        <div class="name">
+                            <span><i class="bi bi-star"></i></span>
+                            <span>${idx + 1}</span>
+                            <figure>
+                                <img src="${val.image}" alt="">
+                            </figure>
+                            <strong><b>${val.name}</b> <span>${val.symbol}</span></strong>
+                        </div>
+                        <div class="price">$ ${val.current_price}</div>
+                        <div class="change">${change24h(val.price_change_percentage_24h)}%</div>
+                        <div class="volume">$ ${usdTob(val.total_volume)} B</div>
+                        <div class="market">$ ${usdTob(val.market_cap)} B</div>
+                        <a href="#">trade</a>
+                    </li>`;
+                        }
+                    });
+                })
+                .catch(errors => {
+                    console.log(errors)
+                });
+        }
+        tabel50();
+    </script>
+    <script src="js/price.js"></script>
+</body>
+
+</html>
